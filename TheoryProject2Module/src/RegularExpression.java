@@ -17,7 +17,50 @@ public class RegularExpression {
 
     // TODO: Complete this method so that it returns the nfa resulting from unioning the two input nfas.
     private NFA union(NFA nfa1, NFA nfa2) {
-        return null;
+        String[] states = new String[nfa1.getStates().length + nfa2.getStates().length];
+        int j = 0;
+        for (String i:nfa1.getStates())
+        {
+            states[++j] = i;
+        }
+        for (String i:nfa2.getStates())
+        {
+            states[++j] = i;
+        }
+        j = 0;
+        char[] alphabet = new char[nfa1.getAlphabet().length + nfa2.getAlphabet().length];
+        for (char i:nfa1.getAlphabet())
+        {
+            alphabet[++j] = i;
+        }
+        for (char i:nfa2.getAlphabet())
+        {
+            alphabet[++j] = i;
+        }
+        j = 0;
+        //HashMap<String, HashMap<Character, HashSet<String>>> transitions;   //state -> (character -> states)
+        String startState = "S" + counter;
+        String[] acceptStates = new String[nfa1.getAcceptStates().length + nfa2.getAcceptStates().length];
+        for (String i:nfa1.getAcceptStates())
+        {
+            acceptStates[++j] = i;
+        }
+        for (String i:nfa1.getAcceptStates())
+        {
+            acceptStates[++j] = i;
+        }
+        j = 0;
+        HashMap<String, HashMap<Character, HashSet<String>>> transitions = new HashMap<>();
+        HashMap<Character, HashSet<String>> transition = new HashMap<>();
+        transitions.putAll(nfa1.getTransitions());
+        transitions.putAll(nfa2.getTransitions());
+        transition.put('e', new HashSet(Arrays.asList(nfa1.getStartState())));
+        transitions.put((startState), transition);
+        transition = new HashMap<>();
+        transition.put('e', new HashSet(Arrays.asList(nfa2.getStartState())));
+        transitions.put((startState), transition);
+        NFA newNFA = new NFA(states, alphabet, transitions, startState, acceptStates);
+        return newNFA;
     }
 
     // TODO: Complete this method so that it returns the nfa resulting from concatenating the two input nfas.
@@ -39,7 +82,7 @@ public class RegularExpression {
             transitions.put((state), transition);
         }
 
-        System.out.println(Arrays.toString(states)+"\n"+transitions.toString()+" Start: "+ startState+" Accept: "+Arrays.toString(acceptStates));
+        //System.out.println(Arrays.toString(states)+"\n"+transitions+" Start: "+ startState+" Accept: "+Arrays.toString(acceptStates));
 
         NFA new_nfa = new NFA(states, alphabet, transitions, startState, acceptStates);
         return new_nfa;
@@ -47,7 +90,35 @@ public class RegularExpression {
 
     // TODO: Complete this method so that it returns the nfa resulting from "staring" the input nfa.
     private NFA star(NFA nfa) {
-        return null;
+        String[] states = new String[nfa.getStates().length];
+        int j = 0;
+        for(String i: nfa.getStates()){
+            states[j++] = i;
+        }
+        String startState = "s1";
+        System.arraycopy(nfa.getStates(), 0, states, 0, nfa.getStates().length);
+
+
+        char[] alphabet = nfa.getAlphabet();
+        String[] acceptStates = nfa.getAcceptStates();
+        String[] tempAcceptState = {"s1"};
+
+        System.arraycopy(tempAcceptState, 0, acceptStates, acceptStates.length-1,nfa.getAcceptStates().length);
+
+
+        HashMap<String, HashMap<Character, HashSet<String>>> transitions = new HashMap<>();
+        HashMap<Character, HashSet<String>> transition = new HashMap<>();
+        transitions.putAll(nfa.getTransitions());
+
+        transition.put('e', new HashSet<>(Arrays.asList(nfa.getStartState())));
+        for (String state: nfa.getAcceptStates()){
+            transitions.put((state), transition);
+        }
+
+        System.out.println(Arrays.toString(states)+"\n"+transitions+" Start: "+ startState+" Accept: "+Arrays.toString(acceptStates));
+
+       NFA new_nfa = new NFA(states, alphabet, transitions, startState, acceptStates);
+       return new_nfa;
     }
 
     // TODO: Complete this method so that it returns the nfa resulting from "plussing" the input nfa.
