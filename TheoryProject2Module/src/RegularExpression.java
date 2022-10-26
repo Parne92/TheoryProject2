@@ -123,7 +123,7 @@ public class RegularExpression {
 
         System.out.println("OldStartState: "+ oldStartState);
         //Adding epsilon transition from new start state, to old start state, essentially "entering" the NFA.
-        transition.put('e', new HashSet(Arrays.asList(oldStartState)));
+        transition.put('e', new HashSet<>(Arrays.asList(oldStartState)));
         transitions.put((startState), transition);
         transition = new HashMap<>();
 
@@ -135,8 +135,8 @@ public class RegularExpression {
 
         System.out.println(Arrays.toString(states)+"\n"+transitions+" Start: "+ startState+" Accept: "+Arrays.toString(acceptStates));
 
-       NFA new_nfa = new NFA(states, alphabet, transitions, startState, acceptStates);
-       return new_nfa;
+        NFA new_nfa = new NFA(states, alphabet, transitions, startState, acceptStates);
+        return new_nfa;
     }
 
     private NFA plus(NFA nfa) {
@@ -164,7 +164,7 @@ public class RegularExpression {
         transitions.putAll(nfa.getTransitions());
 
         //Adding epsilon transition from new start state, to old start state, essentially "entering" the NFA.
-        transition.put('e', new HashSet(Arrays.asList(oldStartState)));
+        transition.put('e', new HashSet<>(Arrays.asList(oldStartState)));
         transitions.put((startState), transition);
         transition = new HashMap<>();
 
@@ -186,12 +186,12 @@ public class RegularExpression {
         char[] alphabet = {'0', '1'};
         String startState = states[0];
         String[] acceptStates = {states[1]};
-        
+
         HashMap<String, HashMap<Character, HashSet<String>>> transitions = new HashMap<>();
         HashMap<Character, HashSet<String>> transition = new HashMap<>();
         transition.put(c, new HashSet<>(Arrays.asList(states[1])));
         transitions.put(states[0], transition);
-        
+
         NFA new_nfa = new NFA(states, alphabet, transitions, startState, acceptStates);
         counter += 2;
 

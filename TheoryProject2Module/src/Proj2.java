@@ -11,7 +11,7 @@ import java.util.HashSet;
 public class Proj2 {
 
     public static void main(String[] args) {
-        RegularExpression re = new RegularExpression("0001U1");
+        RegularExpression re = new RegularExpression("(0001U1)*");
         System.out.println(re.test("0001")); // True.
         System.out.println(re.test("010101"));  // False.
         
