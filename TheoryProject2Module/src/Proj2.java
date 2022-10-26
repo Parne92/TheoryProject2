@@ -11,10 +11,11 @@ import java.util.HashSet;
 public class Proj2 {
 
     public static void main(String[] args) {
-        RegularExpression re = new RegularExpression("(10)*101(00U11)+");
-        System.out.println(re.test("10101010011")); // True.
-        System.out.println(re.test("1010010011"));  // False.
+        RegularExpression re = new RegularExpression("01001");
+        System.out.println(re.test("01001")); // True.
+        System.out.println(re.test("0"));  // False.
         
+        /*
         // NFA creation example.
         String[] states = new String[] {"S1", "S2", "S3", "S4"};
         char[] alphabet = new char[] {'0', '1'};
@@ -51,5 +52,6 @@ public class Proj2 {
         
         System.out.println(nfa.accepts("011111"));
         System.out.println(nfa.accepts("0011111"));
+        */
     }
 }

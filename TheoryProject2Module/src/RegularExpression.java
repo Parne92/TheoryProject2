@@ -1,12 +1,13 @@
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 
-/**
- *
- * @author yaw
- */
 public class RegularExpression {
 
     private String regularExpression;
     private NFA nfa;
+    private int counter = 1;
 
     // You are not allowed to change the name of this class or this constructor at all.
     public RegularExpression(String regularExpression) {
@@ -21,7 +22,27 @@ public class RegularExpression {
 
     // TODO: Complete this method so that it returns the nfa resulting from concatenating the two input nfas.
     private NFA concatenate(NFA nfa1, NFA nfa2) {
-        return null;
+        String[] states = new String[nfa1.getStates().length + nfa2.getStates().length];
+        System.arraycopy(nfa1.getStates(), 0, states, 0, nfa1.getStates().length);
+        System.arraycopy(nfa2.getStates(), 0, states, nfa1.getStates().length, nfa2.getStates().length);
+
+        char[] alphabet = {'0', '1'};
+        String startState = nfa1.getStartState();
+        String[] acceptStates = nfa2.getAcceptStates();
+
+        HashMap<String, HashMap<Character, HashSet<String>>> transitions = new HashMap<>();
+        HashMap<Character, HashSet<String>> transition = new HashMap<>();
+        transitions.putAll(nfa1.getTransitions());
+        transitions.putAll(nfa2.getTransitions());
+        transition.put('e', new HashSet<>(Arrays.asList(nfa2.getStartState())));
+        for (String state: nfa1.getAcceptStates()){
+            transitions.put((state), transition);
+        }
+
+        System.out.println(Arrays.toString(states)+"\n"+transitions.toString()+" Start: "+ startState+" Accept: "+Arrays.toString(acceptStates));
+
+        NFA new_nfa = new NFA(states, alphabet, transitions, startState, acceptStates);
+        return new_nfa;
     }
 
     // TODO: Complete this method so that it returns the nfa resulting from "staring" the input nfa.
@@ -36,7 +57,22 @@ public class RegularExpression {
 
     // TODO: Complete this method so that it returns the nfa that only accepts the character c.
     private NFA singleCharNFA(char c) {
-        return null;
+        String[] states = {"s" + counter, "s" + (counter + 1)};
+        char[] alphabet = {'0', '1'};
+        String startState = states[0];
+        String[] acceptStates = {states[1]};
+        
+        HashMap<String, HashMap<Character, HashSet<String>>> transitions = new HashMap<>();
+        HashMap<Character, HashSet<String>> transition = new HashMap<>();
+        transition.put(c, new HashSet<>(Arrays.asList(states[1])));
+        transitions.put(states[0], transition);
+        
+        NFA new_nfa = new NFA(states, alphabet, transitions, startState, acceptStates);
+        counter += 2;
+
+        //System.out.println(Arrays.toString(states)+"\n"+transitions.toString()+" Start: "+ startState+" Accept: "+Arrays.toString(acceptStates));
+
+        return new_nfa;
     }
 
     // You are not allowed to change this method's header at all.
