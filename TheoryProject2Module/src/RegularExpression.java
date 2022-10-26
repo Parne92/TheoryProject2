@@ -21,21 +21,25 @@ public class RegularExpression {
         int j = 0;
         for (String i:nfa1.getStates())
         {
-            states[++j] = i;
+            states[j] = i;
+            j++;
         }
         for (String i:nfa2.getStates())
         {
-            states[++j] = i;
+            states[j] = i;
+            j++;
         }
         j = 0;
         char[] alphabet = new char[nfa1.getAlphabet().length + nfa2.getAlphabet().length];
         for (char i:nfa1.getAlphabet())
         {
-            alphabet[++j] = i;
+            alphabet[j] = i;
+            j++;
         }
         for (char i:nfa2.getAlphabet())
         {
-            alphabet[++j] = i;
+            alphabet[j] = i;
+            j++;
         }
         j = 0;
         //HashMap<String, HashMap<Character, HashSet<String>>> transitions;   //state -> (character -> states)
@@ -43,22 +47,22 @@ public class RegularExpression {
         String[] acceptStates = new String[nfa1.getAcceptStates().length + nfa2.getAcceptStates().length];
         for (String i:nfa1.getAcceptStates())
         {
-            acceptStates[++j] = i;
+            acceptStates[j] = i;
+            j++;
         }
-        for (String i:nfa1.getAcceptStates())
+        for (String i:nfa2.getAcceptStates())
         {
-            acceptStates[++j] = i;
+            acceptStates[j] = i;
+            j++;
         }
         HashMap<String, HashMap<Character, HashSet<String>>> transitions = new HashMap<>();
         HashMap<Character, HashSet<String>> transition = new HashMap<>();
         transitions.putAll(nfa1.getTransitions());
         transitions.putAll(nfa2.getTransitions());
-        transition.put('e', new HashSet(Arrays.asList(nfa1.getStartState())));
-        transitions.put((startState), transition);
-        transition = new HashMap<>();
-        transition.put('e', new HashSet(Arrays.asList(nfa2.getStartState())));
+        transition.put('e', new HashSet<>(Arrays.asList(nfa1.getStartState(), nfa2.getStartState())));
         transitions.put((startState), transition);
         NFA newNFA = new NFA(states, alphabet, transitions, startState, acceptStates);
+        System.out.println(Arrays.toString(states)+"\n"+transitions+" Start: "+ startState+" Accept: "+Arrays.toString(acceptStates));
         return newNFA;
     }
 
@@ -86,7 +90,6 @@ public class RegularExpression {
         return new_nfa;
     }
 
-    // TODO: Complete this method so that it returns the nfa resulting from "staring" the input nfa.
     private NFA star(NFA nfa) {
         //Creating array of states
         String[] states = new String[nfa.getStates().length];
@@ -136,7 +139,6 @@ public class RegularExpression {
        return new_nfa;
     }
 
-    // TODO: Complete this method so that it returns the nfa resulting from "plussing" the input nfa.
     private NFA plus(NFA nfa) {
         //Creating array of states.
         String[] states = new String[nfa.getStates().length];
