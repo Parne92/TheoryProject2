@@ -88,33 +88,41 @@ public class RegularExpression {
 
     // TODO: Complete this method so that it returns the nfa resulting from "staring" the input nfa.
     private NFA star(NFA nfa) {
+        //Creating array of states
         String[] states = new String[nfa.getStates().length];
         int j = 0;
         for(String i: nfa.getStates()){
             states[j++] = i;
         }
+
+        //Setting the old start state, as well as the new start state.
         String oldStartState = nfa.getStartState();
-        String startState = "s1";
-        System.arraycopy(nfa.getStates(), 0, states, 0, nfa.getStates().length);
+        String startState = "sa";
+        states = Arrays.copyOf(states, states.length + 1);
+        states[states.length - 1] = "sa";
+
 
 
         char[] alphabet = nfa.getAlphabet();
+
+        //Creating the array of accept states. S1 can be constant, it will always be the created state.
         String[] acceptStates = nfa.getAcceptStates();
         acceptStates = Arrays.copyOf(acceptStates, acceptStates.length + 1);
 
-        acceptStates[acceptStates.length - 1] = "s1";
+        acceptStates[acceptStates.length - 1] = "sa";
 
 
         HashMap<String, HashMap<Character, HashSet<String>>> transitions = new HashMap<>();
         HashMap<Character, HashSet<String>> transition = new HashMap<>();
         transitions.putAll(nfa.getTransitions());
 
-
-        transition.put('e', new HashSet(Arrays.asList(nfa.getStartState())));
+        System.out.println("OldStartState: "+ oldStartState);
+        //Adding epsilon transition from new start state, to old start state, essentially "entering" the NFA.
+        transition.put('e', new HashSet(Arrays.asList(oldStartState)));
         transitions.put((startState), transition);
         transition = new HashMap<>();
 
-
+        //Setting epsilon transitions to the OLD start state, from accept states.
         transition.put('e', new HashSet<>(Arrays.asList(oldStartState)));
         for (String state: nfa.getAcceptStates()){
             transitions.put((state), transition);
