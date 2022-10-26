@@ -49,7 +49,6 @@ public class RegularExpression {
         {
             acceptStates[++j] = i;
         }
-        j = 0;
         HashMap<String, HashMap<Character, HashSet<String>>> transitions = new HashMap<>();
         HashMap<Character, HashSet<String>> transition = new HashMap<>();
         transitions.putAll(nfa1.getTransitions());
@@ -82,7 +81,6 @@ public class RegularExpression {
             transitions.put((state), transition);
         }
 
-        //System.out.println(Arrays.toString(states)+"\n"+transitions+" Start: "+ startState+" Accept: "+Arrays.toString(acceptStates));
 
         NFA new_nfa = new NFA(states, alphabet, transitions, startState, acceptStates);
         return new_nfa;
@@ -101,14 +99,20 @@ public class RegularExpression {
 
         char[] alphabet = nfa.getAlphabet();
         String[] acceptStates = nfa.getAcceptStates();
-        String[] tempAcceptState = {"s1"};
+        acceptStates = Arrays.copyOf(acceptStates, acceptStates.length + 1);
 
-        System.arraycopy(tempAcceptState, 0, acceptStates, acceptStates.length-1,nfa.getAcceptStates().length);
+        acceptStates[acceptStates.length - 1] = "s1";
 
 
         HashMap<String, HashMap<Character, HashSet<String>>> transitions = new HashMap<>();
         HashMap<Character, HashSet<String>> transition = new HashMap<>();
         transitions.putAll(nfa.getTransitions());
+
+
+        transition.put('e', new HashSet(Arrays.asList(nfa.getStartState())));
+        transitions.put((startState), transition);
+        transition = new HashMap<>();
+
 
         transition.put('e', new HashSet<>(Arrays.asList(nfa.getStartState())));
         for (String state: nfa.getAcceptStates()){
@@ -123,7 +127,38 @@ public class RegularExpression {
 
     // TODO: Complete this method so that it returns the nfa resulting from "plussing" the input nfa.
     private NFA plus(NFA nfa) {
-        return null;
+        String[] states = new String[nfa.getStates().length];
+        int j = 0;
+        for(String i: nfa.getStates()){
+            states[j++] = i;
+        }
+        String startState = "s1";
+        System.arraycopy(nfa.getStates(), 0, states, 0, nfa.getStates().length);
+
+
+        char[] alphabet = nfa.getAlphabet();
+        String[] acceptStates = nfa.getAcceptStates();
+
+
+        HashMap<String, HashMap<Character, HashSet<String>>> transitions = new HashMap<>();
+        HashMap<Character, HashSet<String>> transition = new HashMap<>();
+        transitions.putAll(nfa.getTransitions());
+
+
+        transition.put('e', new HashSet(Arrays.asList(nfa.getStartState())));
+        transitions.put((startState), transition);
+        transition = new HashMap<>();
+
+
+        transition.put('e', new HashSet<>(Arrays.asList(nfa.getStartState())));
+        for (String state: nfa.getAcceptStates()){
+            transitions.put((state), transition);
+        }
+
+        //System.out.println(Arrays.toString(states)+"\n"+transitions+" Start: "+ startState+" Accept: "+Arrays.toString(acceptStates));
+
+        NFA new_nfa = new NFA(states, alphabet, transitions, startState, acceptStates);
+        return new_nfa;
     }
 
     // TODO: Complete this method so that it returns the nfa that only accepts the character c.
