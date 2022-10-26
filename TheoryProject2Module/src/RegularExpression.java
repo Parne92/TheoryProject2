@@ -98,6 +98,8 @@ public class RegularExpression {
         //Setting the old start state, as well as the new start state.
         String oldStartState = nfa.getStartState();
         String startState = "sa";
+
+        //Adding sa (the state created in front) to the list of states.
         states = Arrays.copyOf(states, states.length + 1);
         states[states.length - 1] = "sa";
 
@@ -136,14 +138,19 @@ public class RegularExpression {
 
     // TODO: Complete this method so that it returns the nfa resulting from "plussing" the input nfa.
     private NFA plus(NFA nfa) {
+        //Creating array of states.
         String[] states = new String[nfa.getStates().length];
         int j = 0;
         for(String i: nfa.getStates()){
             states[j++] = i;
         }
-        String startState = "s1";
+
+        //creating the new start state - sna - (start, not accept)
+        String startState = "sna";
         String oldStartState = nfa.getStartState();
-        System.arraycopy(nfa.getStates(), 0, states, 0, nfa.getStates().length);
+        //Adding sna (the state created in front) to the list of states.
+        states = Arrays.copyOf(states, states.length + 1);
+        states[states.length - 1] = "sna";
 
 
         char[] alphabet = nfa.getAlphabet();
@@ -154,8 +161,8 @@ public class RegularExpression {
         HashMap<Character, HashSet<String>> transition = new HashMap<>();
         transitions.putAll(nfa.getTransitions());
 
-
-        transition.put('e', new HashSet(Arrays.asList(nfa.getStartState())));
+        //Adding epsilon transition from new start state, to old start state, essentially "entering" the NFA.
+        transition.put('e', new HashSet(Arrays.asList(oldStartState)));
         transitions.put((startState), transition);
         transition = new HashMap<>();
 

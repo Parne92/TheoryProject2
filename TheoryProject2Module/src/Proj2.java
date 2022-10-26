@@ -11,9 +11,9 @@ import java.util.HashSet;
 public class Proj2 {
 
     public static void main(String[] args) {
-        RegularExpression re = new RegularExpression("(0)*");
+        RegularExpression re = new RegularExpression("(0)+");
         System.out.println(re.test("01001")); // True.
-        System.out.println(re.test("0"));  // False.
+        System.out.println(re.test("00"));  // False.
         
         /*
         // NFA creation example.
