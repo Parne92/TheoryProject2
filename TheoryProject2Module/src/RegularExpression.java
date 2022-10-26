@@ -93,6 +93,7 @@ public class RegularExpression {
         for(String i: nfa.getStates()){
             states[j++] = i;
         }
+        String oldStartState = nfa.getStartState();
         String startState = "s1";
         System.arraycopy(nfa.getStates(), 0, states, 0, nfa.getStates().length);
 
@@ -114,7 +115,7 @@ public class RegularExpression {
         transition = new HashMap<>();
 
 
-        transition.put('e', new HashSet<>(Arrays.asList(nfa.getStartState())));
+        transition.put('e', new HashSet<>(Arrays.asList(oldStartState)));
         for (String state: nfa.getAcceptStates()){
             transitions.put((state), transition);
         }
@@ -133,6 +134,7 @@ public class RegularExpression {
             states[j++] = i;
         }
         String startState = "s1";
+        String oldStartState = nfa.getStartState();
         System.arraycopy(nfa.getStates(), 0, states, 0, nfa.getStates().length);
 
 
@@ -150,7 +152,7 @@ public class RegularExpression {
         transition = new HashMap<>();
 
 
-        transition.put('e', new HashSet<>(Arrays.asList(nfa.getStartState())));
+        transition.put('e', new HashSet<>(Arrays.asList(oldStartState)));
         for (String state: nfa.getAcceptStates()){
             transitions.put((state), transition);
         }
