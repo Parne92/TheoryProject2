@@ -133,9 +133,10 @@ public class RegularExpression {
             transitions.put((state), transition);
         }
 
-        //System.out.println(Arrays.toString(states)+"\n"+transitions+" Start: "+ startState+" Accept: "+Arrays.toString(acceptStates));
+        System.out.println(Arrays.toString(states)+"\n"+transitions+" Start: "+ startState+" Accept: "+Arrays.toString(acceptStates));
 
         NFA new_nfa = new NFA(states, alphabet, transitions, startState, acceptStates);
+        counter++;
         return new_nfa;
     }
 
@@ -177,6 +178,7 @@ public class RegularExpression {
         //System.out.println(Arrays.toString(states)+"\n"+transitions+" Start: "+ startState+" Accept: "+Arrays.toString(acceptStates));
 
         NFA new_nfa = new NFA(states, alphabet, transitions, startState, acceptStates);
+        counter++;
         return new_nfa;
     }
 
