@@ -100,11 +100,11 @@ public class RegularExpression {
 
         //Setting the old start state, as well as the new start state.
         String oldStartState = nfa.getStartState();
-        String startState = "sa";
+        String startState = "s" + counter;
 
         //Adding sa (the state created in front) to the list of states.
         states = Arrays.copyOf(states, states.length + 1);
-        states[states.length - 1] = "sa";
+        states[states.length - 1] = startState;
 
 
 
@@ -114,7 +114,7 @@ public class RegularExpression {
         String[] acceptStates = nfa.getAcceptStates();
         acceptStates = Arrays.copyOf(acceptStates, acceptStates.length + 1);
 
-        acceptStates[acceptStates.length - 1] = "sa";
+        acceptStates[acceptStates.length - 1] = startState;
 
 
         HashMap<String, HashMap<Character, HashSet<String>>> transitions = new HashMap<>();
@@ -148,11 +148,11 @@ public class RegularExpression {
         }
 
         //creating the new start state - sna - (start, not accept)
-        String startState = "sna";
+        String startState = "s"+ counter;
         String oldStartState = nfa.getStartState();
         //Adding sna (the state created in front) to the list of states.
         states = Arrays.copyOf(states, states.length + 1);
-        states[states.length - 1] = "sna";
+        states[states.length - 1] = startState;
 
 
         char[] alphabet = nfa.getAlphabet();
